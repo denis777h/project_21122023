@@ -1,0 +1,30 @@
+{% extends 'default.html' %}
+
+{% block content %}
+    <h1>News</h1>
+    {% for item in news %}
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.content }}</p>
+        <!-- Остальные поля новости -->
+    {% endfor %}
+
+    <div class="pagination">
+        {% if news.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ news.previous_page_number }}">previous</a>
+        {% endif %}
+
+        {% for i in news.paginator.page_range %}
+            {% if news.number == i %}
+                <span class="current-page">{{ i }}</span>
+            {% elif news.number > i|add:-3 and news.number < i|add:3 %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if news.has_next %}
+            <a href="?page={{ news.next_page_number }}">next</a>
+            <a href="?page={{ news.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </div>
+{% endblock %}
